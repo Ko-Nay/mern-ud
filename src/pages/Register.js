@@ -100,7 +100,6 @@ const Register = () => {
                   Login
                 </button>
               )}
-              {/* <a href="/">Login</a> */}
             </span>
           </p>
         </div>
