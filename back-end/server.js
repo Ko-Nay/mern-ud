@@ -1,7 +1,3 @@
-// by ES6 JS
-// import express from 'express';
-// import notFoundMiddleware from './middleware/not-found-middle/notFoundMiddle';
-
 /** by Common JS */
 const express = require('express');
 
@@ -9,25 +5,29 @@ const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const connectDB = require('./config/connectDB');
-const notFoundMiddleware = require('./middleware/not-found-middle/notFoundMiddle.js');
+const notFoundMiddleWare = require('./middleware/not-found-middle/notFoundMiddleware');
 const errorHandler = require('./middleware/errorHandler');
+const authRoutes = require('./routes/authRoutes');
+const jobRoutes = require('./routes/jobRoutes');
 
 const app = express();
 const port = process.env.PORT || 3500;
 connectDB();
 
-app.get('/', (req, res) => {
-  res.send('Welocme to MERN stack!');
-});
+/* we will pass data from req.body of POST as json data */
+app.use(express.json());
 
-// app.all('*', (req, res) => {
-//   res.status(404).send('Page Not Found!');
-// });
+/* ROUTES */
+app.get('/', require('./routes/rootRoutes'));
+
+app.use('/api/v1/auth', require('./routes/authRoutes'));
+app.use('/api/v1/job', require('./routes/jobRoutes'));
 
 /* for invalid routes: client mistakes */
-app.all('*', notFoundMiddleware);
+// app.all('*', notFoundMiddleware);
 
 /* for server errors */
+app.use(notFoundMiddleWare);
 app.use(errorHandler);
 
 mongoose.connection.once('open', () => {
