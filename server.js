@@ -23,9 +23,6 @@ app.get('/', require('./routes/rootRoutes'));
 app.use('/api/v1/auth', require('./routes/authRoutes'));
 app.use('/api/v1/job', require('./routes/jobRoutes'));
 
-/* for invalid routes: client mistakes */
-// app.all('*', notFoundMiddleware);
-
 /* for server errors */
 app.use(notFoundMiddleWare);
 app.use(errorHandler);
