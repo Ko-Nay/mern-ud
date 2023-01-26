@@ -22,7 +22,7 @@ const register = async (req, res, next) => {
     const token = user.createJWT();
     res
       .status(StatusCodes.CREATED)
-      .json({ user, token, location: this.location });
+      .json({ user, token, location: user.location });
   } catch (error) {
     next(error);
   }

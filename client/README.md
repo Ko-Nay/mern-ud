@@ -68,19 +68,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-### Client Server Connection
-
-### Separate server and client folders in jobify
-
-- [server]
-- [client]
-
-### Connecting Server and Clilent under jobify
-
-- [custom script] ("server" : "npm start --prefix server") -> connecting to the package.json in server folder
-- [custom script] ("client" : "npm start --prefix client") -> connecting to the package.json in the client folder
-
-### run command
-
-- npm run server/client
