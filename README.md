@@ -37,3 +37,11 @@
 ### run command
 
 - npm run server/client
+
+### cors
+
+- npm i cors ( apply cors middleware )
+
+### proxy
+
+- can access from everywhere
