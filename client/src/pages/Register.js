@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FormRow, Logo, Alert } from '../components';
 import { useAppProvider } from '../context/ContextProvider';
 
 const Register = () => {
   const inititalState = {
-    username: '',
+    name: '',
     email: '',
     password: '',
     isMember: true,
   };
 
+  const navigate = useNavigate();
   const [inputValues, setInputValues] = useState(inititalState);
-  const { state, showAlert, displayAlert } = useAppProvider();
-  console.log(state);
+  const { user, isLoading, showAlert, displayAlert, setupUser } =
+    useAppProvider();
 
   const toggleMember = () => {
     setInputValues({ ...inputValues, isMember: !inputValues.isMember });
@@ -25,11 +26,35 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { username, email, password, isMember } = inputValues;
-    if (!email || !password || (!isMember && !username)) {
+
+    const { name, email, password, isMember } = inputValues;
+    if (!email || !password || (!isMember && !name)) {
       displayAlert();
     }
+
+    const currentUser = { name, email, password };
+    if (isMember) {
+      setupUser({
+        currentUser,
+        endPoint: 'login',
+        alertText: 'Login successful! Redirecting...',
+      });
+    } else {
+      setupUser({
+        currentUser,
+        endPoint: 'register',
+        alertText: 'User Created! Redirecting...',
+      });
+    }
   };
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 3000);
+    }
+  }, [user, navigate]);
 
   return (
     <main>
@@ -48,8 +73,8 @@ const Register = () => {
             htmlFor="name"
             id="name"
             type="text"
-            name="username"
-            value={inputValues.username}
+            name="name"
+            value={inputValues.name}
             handleChange={onChangeHandle}
           />
         )}
@@ -76,31 +101,15 @@ const Register = () => {
           handleChange={onChangeHandle}
         />
 
-        <button className="btn btn-submit" type="submit">
+        <button className="btn btn-block" type="submit" disabled={isLoading}>
           Submit
         </button>
         <div className="form-footer">
           <p>
             {inputValues.isMember ? 'Not a member yet? ' : 'Already a member? '}
-            <span>
-              {inputValues.isMember ? (
-                <button
-                  type="link"
-                  className="member-btn"
-                  onClick={toggleMember}
-                >
-                  Register
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="member-btn"
-                  onClick={toggleMember}
-                >
-                  Login
-                </button>
-              )}
-            </span>
+            <button type="button" onClick={toggleMember} className="member-btn">
+              {inputValues.isMember ? 'Register' : 'Login'}
+            </button>
           </p>
         </div>
       </form>

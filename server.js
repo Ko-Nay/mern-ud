@@ -4,6 +4,7 @@ const express = require('express');
 /* need to config dotenv*/
 require('dotenv').config();
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 // const cors = require('cors');
 const connectDB = require('./config/connectDB');
 const notFoundMiddleWare = require('./middleware/not-found-middle/notFoundMiddleware');
@@ -24,6 +25,10 @@ app.get('/', require('./routes/rootRoutes'));
 app.get('/api/v1', (req, res) => {
   res.json({ msg: 'API' });
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
 
 app.use('/api/v1/auth', require('./routes/authRoutes'));
 app.use('/api/v1/job', require('./routes/jobRoutes'));

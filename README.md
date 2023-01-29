@@ -45,3 +45,8 @@
 ### proxy
 
 - can access from everywhere
+
+#### Axios
+
+- [axios] (https://axios-http.com/docs/intro)
+- npm i axios
