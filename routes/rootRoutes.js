@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.send('Welocme to MERN Stack!');
+  res.json({ name: 'Nay Linn Hein' });
 });
 
 module.exports = router;

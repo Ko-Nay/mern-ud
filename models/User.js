@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Password is required'],
     minlength: 6,
+    select: false,
   },
   lastName: {
     type: String,
@@ -35,7 +36,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     maxlength: 20,
     trim: true,
-    default: 'my location',
+    default: 'my city',
   },
 });
 
@@ -50,6 +51,11 @@ UserSchema.methods.createJWT = function () {
   return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_LIFETIME,
   });
+};
+
+UserSchema.methods.comparePassword = async function (candicatePassword) {
+  const isMatch = await bcrypt.compare(candicatePassword, this.password);
+  return isMatch;
 };
 
 module.exports = mongoose.model('User', UserSchema);
