@@ -8,6 +8,7 @@ const {
   UN_AUTHENTICATED_Error,
 } = require('../errors/index');
 
+/****** REGISTER ******/
 const register = async (req, res, next) => {
   const { name, email, password } = req.body;
 
@@ -25,10 +26,10 @@ const register = async (req, res, next) => {
     const token = user.createJWT();
     res.status(StatusCodes.CREATED).json({
       user: {
+        name: user.name,
         email: user.email,
         lastName: user.lastName,
         location: user.location,
-        name: user.name,
       },
       token,
       location: user.location,
@@ -37,6 +38,8 @@ const register = async (req, res, next) => {
     next(error);
   }
 };
+
+/****** LOGIN ******/
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -49,7 +52,7 @@ const login = async (req, res) => {
   if (!user) {
     throw new UN_AUTHENTICATED_Error('Invalid user');
   }
-  console.log('user: ', user);
+  // console.log('user: ', user);
 
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
@@ -62,6 +65,7 @@ const login = async (req, res) => {
   res.status(StatusCodes.OK).json({ user, token, location: user.location });
 };
 
+/****** UPDATE ******/
 const updateUser = async (req, res) => {
   res.status(201).send('Update Users');
 };

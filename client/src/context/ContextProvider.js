@@ -6,6 +6,8 @@ import {
   SETUP_USER_BEGIN,
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
+  TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from '../components/actions/actions';
 import reducer from '../components/reducers/reducers';
 
@@ -26,6 +28,7 @@ const inititalState = {
   token: token,
   userLocation: location || '',
   jobLocation: location || '',
+  showSidebar: false,
 };
 
 /** context gives data to the Provider that can be accessed by the child comps by the useContext */
@@ -37,6 +40,13 @@ const AppProvider = ({ children }) => {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('location', location);
+  };
+
+  /* remove user data to the localStorage*/
+  const removeUserFromLocalStorage = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('location');
   };
 
   const displayAlert = () => {
@@ -79,6 +89,15 @@ const AppProvider = ({ children }) => {
   };
   clearAlert();
 
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR });
+  };
+
+  const logoutUser = () => {
+    dispatch({ type: LOGOUT_USER });
+    removeUserFromLocalStorage();
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -86,6 +105,8 @@ const AppProvider = ({ children }) => {
         displayAlert,
         clearAlert,
         setupUser,
+        toggleSidebar,
+        logoutUser,
       }}
     >
       {children}

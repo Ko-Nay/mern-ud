@@ -1,25 +1,28 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Dashboard, Landing, Register, PageError } from './pages';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Landing, Register, PageError } from './pages';
+import { Stats, AllJob, AddJob, Profile, ShareLayout } from './pages/dashboard';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 function App() {
   return (
     <BrowserRouter>
-      <nav className="app-nav">
-        <Link to="/" className="link active">
-          Landing
-        </Link>
-        <Link to="/register" className="link">
-          Register
-        </Link>
-        <Link to="/dashboard" className="link">
-          Dashboard
-        </Link>
-      </nav>
       <Routes>
-        <Route exact path="/" element={<Landing />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <ShareLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Stats />} />
+          <Route path="all-jobs" element={<AllJob />} />
+          <Route path="add-job" element={<AddJob />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
+        <Route exact path="/landing" element={<Landing />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route exact path="*" element={<PageError />} />
       </Routes>
     </BrowserRouter>
